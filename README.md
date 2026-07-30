@@ -3,26 +3,22 @@
 This is the official repository for the CVPR 2025 paper
 [*Test-Time Backdoor Detection for Object Detection Models*](https://openaccess.thecvf.com/content/CVPR2025/html/Zhang_Test-Time_Backdoor_Detection_for_Object_Detection_Models_CVPR_2025_paper.html).
 
-The repository reproduces TRACE on YOLOv5/COCO for OGA, ODA, and RMA. The three
+The repository provides TRACE on YOLOv5/COCO for OGA, ODA, and RMA attacks. The three
 top-level Python files are the complete public workflow:
 
 ```text
 poison.py  ->  train.py  ->  detect.py
 ```
 
-All experiment settings are written near the top of these files and can be
-edited directly.
-
-## Results
+## Results on subset
 
 | Attack | F1 | Accuracy | AUROC |
 |---|---:|---:|---:|
-| OGA | **0.8944** | 0.8900 | 0.8985 |
-| ODA | **0.9205** | 0.9240 | 0.9111 |
-| RMA | **0.9257** | 0.9300 | 0.9167 |
+| OGA | 0.8944 | 0.8900 | 0.8985 |
+| ODA | 0.9205 | 0.9240 | 0.9111 |
+| RMA | 0.9257 | 0.9300 | 0.9167 |
 
-Each result uses 250 clean and 250 poisoned COCO val2017 images. Full scores,
-ROC data, checkpoint mAP, and ASR are in [RESULTS.md](RESULTS.md).
+Each result uses 250 clean and 250 poisoned COCO val2017 images. Full scores, ROC data, checkpoint mAP, and ASR are in [RESULTS.md](RESULTS.md).
 
 ## Setup
 
@@ -77,11 +73,8 @@ python detect.py --attack oga --source data/eval_oga/images/val2017 --device 0
 ```
 
 `detect.py` recognizes the generated `clean_` and `poison_` filenames and
-reports the maximum-F1 threshold automatically. No manifest is required.
+reports the best-F1 threshold automatically. No manifest is required.
 
-TRACE always computes both CTC and FTC and combines them with equal weight.
-Every image uses 30 background queries and 50 focal queries, with five random
-non-overlapping NBOs in each focal query.
 
 See [THIRD_PARTY.md](THIRD_PARTY.md) for upstream projects and data provenance.
 
