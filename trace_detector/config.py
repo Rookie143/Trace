@@ -1,10 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any
-
-import yaml
 
 
 @dataclass
@@ -62,47 +58,4 @@ class TraceConfig:
             and not 0 <= self.transformation_confidence <= 1
         ):
             raise ValueError("transformation_confidence must be in [0, 1]")
-
-
-def load_yaml(path: str | Path) -> dict[str, Any]:
-    path = Path(path).expanduser().resolve()
-    with path.open(encoding="utf-8") as handle:
-        data = yaml.safe_load(handle) or {}
-    if not isinstance(data, dict):
-        raise TypeError(f"expected a mapping in {path}")
-    return data
-
-
-def trace_config(path: str | Path, components: str | None = None) -> TraceConfig:
-    source = Path(path).expanduser().resolve()
-    raw = load_yaml(source)
-    root = source.parent
-
-    def resolve(value: str) -> str:
-        candidate = Path(value).expanduser()
-        return str(candidate if candidate.is_absolute() else (root / candidate).resolve())
-
-    backgrounds: list[str] = []
-    for entry in raw.get("backgrounds", []):
-        candidate = Path(resolve(str(entry)))
-        if candidate.is_dir():
-            backgrounds.extend(
-                str(p) for p in sorted(candidate.iterdir()) if p.suffix.lower() in IMAGE_SUFFIXES
-            )
-        else:
-            backgrounds.append(str(candidate))
-    raw["backgrounds"] = backgrounds
-    raw["nbo"] = resolve(str(raw.get("nbo", ""))) if raw.get("nbo") else ""
-    if raw.get("references"):
-        raw["references"] = resolve(str(raw["references"]))
-    config = TraceConfig(**raw)
-    if components is not None:
-        if components not in {"full", "ctc", "ftc"}:
-            raise ValueError("components must be full, ctc, or ftc")
-        config.compute_ctc = components in {"full", "ctc"}
-        config.compute_ftc = components in {"full", "ftc"}
-    config.validate()
-    return config
-
-
 IMAGE_SUFFIXES = {".bmp", ".jpeg", ".jpg", ".png", ".tif", ".tiff", ".webp"}

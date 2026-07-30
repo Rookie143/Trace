@@ -25,10 +25,6 @@ Paper = "https://openaccess.thecvf.com/content/CVPR2025/html/Zhang_Test-Time_Bac
 [project.optional-dependencies]
 dev = ["pytest>=7.0", "ruff>=0.4"]
 
-[project.scripts]
-trace = "trace_detector.run:main"
-trace-tools = "trace_detector.cli:main"
-
 [tool.setuptools.packages.find]
 include = ["trace_detector*"]
 
