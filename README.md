@@ -1,5 +1,8 @@
 # TRACE
 
+This is the official repository for the CVPR 2025 paper
+[*Test-Time Backdoor Detection for Object Detection Models*](https://openaccess.thecvf.com/content/CVPR2025/html/Zhang_Test-Time_Backdoor_Detection_for_Object_Detection_Models_CVPR_2025_paper.html).
+
 TRACE is a test-time backdoor detector for object detection models. This
 repository provides a clean YOLOv5/COCO implementation for three representative
 attacks:
@@ -235,5 +238,16 @@ This implementation reproduces the framework introduced in:
 
 > [*Test-Time Backdoor Detection for Object Detection Models*](https://openaccess.thecvf.com/content/CVPR2025/html/Zhang_Test-Time_Backdoor_Detection_for_Object_Detection_Models_CVPR_2025_paper.html),
 > CVPR 2025.
+
+```bibtex
+@InProceedings{Zhang_2025_CVPR,
+    author    = {Zhang, Hangtao and Wang, Yichen and Yan, Shihui and Zhu, Chenyu and Zhou, Ziqi and Hou, Linshan and Hu, Shengshan and Li, Minghui and Zhang, Yanjun and Zhang, Leo Yu},
+    title     = {Test-Time Backdoor Detection for Object Detection Models},
+    booktitle = {Proceedings of the Computer Vision and Pattern Recognition Conference (CVPR)},
+    month     = {June},
+    year      = {2025},
+    pages     = {24377--24386}
+}
+```
 
 See [THIRD_PARTY.md](THIRD_PARTY.md) for upstream projects and data provenance.
