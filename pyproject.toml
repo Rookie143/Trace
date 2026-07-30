@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trace-defense"
+version = "1.0.0"
+description = "Reproducible TRACE backdoor detection for object detectors"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = [
+  "numpy>=1.23",
+  "Pillow>=9.0",
+  "PyYAML>=6.0",
+  "scikit-image>=0.20",
+  "scikit-learn>=1.2",
+  "tqdm>=4.64",
+]
+
+[project.urls]
+Repository = "https://github.com/Rookie143/Trace"
+Paper = "https://openaccess.thecvf.com/content/CVPR2025/html/Zhang_Test-Time_Backdoor_Detection_for_Object_Detection_Models_CVPR_2025_paper.html"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "ruff>=0.4"]
+
+[project.scripts]
+trace = "trace_detector.run:main"
+trace-tools = "trace_detector.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["trace_detector*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint.per-file-ignores]
+"trace_detector/training_runner.py" = ["S102"]
+"trace_detector/validation_runner.py" = ["S102"]
+"trace_detector/yolov5.py" = ["S102"]
+"tests/*.py" = ["RUF012"]

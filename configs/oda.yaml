@@ -1,0 +1,19 @@
+# ODA transformation hyperparameters. Score definitions are shared globally.
+backgrounds:
+  - ../assets/backgrounds
+nbo: ../assets/nbo/stop_sign.png
+nbo_class_id: 11
+references: ../assets/references
+background_queries: 30
+foreground_queries: 50
+points_per_query: 5
+background_opacity: 0.15
+ctc_statistic: mean_abs_delta
+ftc_statistic: variance
+nbo_scale: 0.30
+ssim_threshold: 0.08
+match_iou: 0.50
+ctc_scale: 1.0
+ftc_scale: 1.0
+batch_size: 16
+seed: 0

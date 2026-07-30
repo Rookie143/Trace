@@ -1,0 +1,12 @@
+{
+  "asr": 0.998997995991984,
+  "attack": "oda",
+  "events": 998,
+  "image_success_rate": 0.996,
+  "manifest": "data/eval_oda_500/manifest_val2017.csv",
+  "match_iou": 0.5,
+  "samples": 250,
+  "successes": 997,
+  "successful_images": 249,
+  "target_class": 0
+}
