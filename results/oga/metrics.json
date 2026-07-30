@@ -1,0 +1,13 @@
+{
+  "accuracy": 0.89,
+  "auroc": 0.898544,
+  "clean_samples": 250.0,
+  "f1": 0.8944337811900193,
+  "poisoned_samples": 250.0,
+  "precision": 0.8597785977859779,
+  "recall": 0.932,
+  "roc_auc_trapezoid": 0.898544,
+  "samples": 500.0,
+  "threshold": -0.0025490309527708144,
+  "threshold_policy": "dataset-optimal"
+}

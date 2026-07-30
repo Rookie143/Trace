@@ -1,0 +1,12 @@
+{
+  "asr": 1.0,
+  "attack": "oga",
+  "events": 250,
+  "image_success_rate": 1.0,
+  "manifest": "data/eval_oga_500/manifest_val2017.csv",
+  "match_iou": 0.5,
+  "samples": 250,
+  "successes": 250,
+  "successful_images": 250,
+  "target_class": 0
+}

@@ -1,0 +1,12 @@
+{
+  "asr": 0.92,
+  "attack": "rma",
+  "events": 250,
+  "image_success_rate": 0.92,
+  "manifest": "data/eval_rma_500/manifest_val2017.csv",
+  "match_iou": 0.5,
+  "samples": 250,
+  "successes": 230,
+  "successful_images": 230,
+  "target_class": 0
+}
