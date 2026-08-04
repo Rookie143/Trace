@@ -65,6 +65,22 @@ python detect.py --attack oga --source /path/to/images --device 0
 The checkpoint and all TRACE settings are selected automatically. Results are
 saved in `runs/trace/oga/`.
 
+For a labeled evaluation folder, ground-truth labels are provided by filename:
+
+```text
+images/
+├── clean_000001.jpg    # clean label (0)
+├── clean_000002.jpg
+├── poison_000001.jpg   # backdoor label (1)
+└── poison_000002.jpg
+```
+
+`poison.py --paired` creates these names automatically. The prefix is used only
+to calculate F1, accuracy, and AUROC after scoring; it is never used to compute
+CTC, FTC, or the TRACE score. Images without either prefix are treated as
+unlabeled inputs: `detect.py` still reports their TRACE score and clean/backdoor
+prediction, but does not calculate dataset metrics.
+
 To reproduce F1 on the complete eligible COCO validation set:
 
 ```bash
@@ -72,8 +88,8 @@ python poison.py --attack oga --coco /path/to/coco --split val2017 --paired
 python detect.py --attack oga --source data/eval_oga/images/val2017 --device 0
 ```
 
-`detect.py` recognizes the generated `clean_` and `poison_` filenames and
-reports the best-F1 threshold automatically. No manifest is required.
+`detect.py` reports the best-F1 threshold automatically. No manifest is
+required.
 
 
 See [THIRD_PARTY.md](THIRD_PARTY.md) for upstream projects and data provenance.
