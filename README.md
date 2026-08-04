@@ -19,8 +19,7 @@ poison.py  ->  train.py  ->  detect.py
 | RMA | 0.9474 | 0.9500 | 0.9357 |
 
 Test setting: YOLOv5/COCO, 100 clean + 100 poisoned images (fixed seed-3
-subset), full CTC+FTC, best-F1 threshold; detector confidence is 0.50 for OGA
-and 0.25 for ODA/RMA.
+subset), full CTC+FTC, and best-F1 threshold.
 Full scores, checkpoint mAP, and ASR are in [RESULTS.md](RESULTS.md).
 
 ## Setup
@@ -63,19 +62,20 @@ The released test folders contain the same 100 clean and 100 poisoned images
 used in the result table. They are downloaded by `git lfs pull` during setup:
 
 ```bash
-python detect.py --attack oga --source test_data/oga --device 0
-python detect.py --attack oda --source test_data/oda --device 0
-python detect.py --attack rma --source test_data/rma --device 0
+python detect.py --model checkpoints/oga.pt --source test_data/oga --device 0
+python detect.py --model checkpoints/oda.pt --source test_data/oda --device 0
+python detect.py --model checkpoints/rma.pt --source test_data/rma --device 0
 ```
 
 To test other inputs, give TRACE one image or an image folder:
 
 ```bash
-python detect.py --attack oga --source /path/to/images --device 0
+python detect.py --model /path/to/model.pt --source /path/to/images --device 0
 ```
 
-The checkpoint and all TRACE settings are selected automatically. Results are
-saved in `runs/trace/oga/`.
+TRACE receives only the deployed model and input images; no attack type is
+provided. Released-model settings are selected automatically from the model
+file. Results are saved under `runs/trace/<model-name>/`.
 
 For a labeled evaluation folder, ground-truth labels are provided by filename:
 
@@ -97,7 +97,7 @@ To reproduce F1 on the complete eligible COCO validation set:
 
 ```bash
 python poison.py --attack oga --coco /path/to/coco --split val2017 --paired
-python detect.py --attack oga --source data/eval_oga/images/val2017 --device 0
+python detect.py --model checkpoints/oga.pt --source data/eval_oga/images/val2017 --device 0
 ```
 
 `detect.py` reports the best-F1 threshold automatically. No manifest is

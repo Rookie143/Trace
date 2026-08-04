@@ -13,8 +13,8 @@ evaluated set.
 | RMA | 200 | 0.9474 | 0.9500 | 0.9357 | 1.0000 | 0.9000 | 0.00132155 |
 
 Each run contains the same-size fixed seed-3 subset: 100 clean and 100 poisoned
-samples. Detector confidence is 0.50 for OGA and 0.25 for ODA/RMA; all reported
-TRACE score definitions are shared.
+samples. All reported TRACE score definitions are shared, and detection takes
+only a model and input images—not an attack label.
 
 Auditable outputs:
 

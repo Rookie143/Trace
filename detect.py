@@ -44,21 +44,29 @@ FTC_STATISTIC = "variance"
 CTC_WEIGHT = 1.0
 FTC_WEIGHT = 1.0
 
-# Only transformation settings and the reported maximum-F1 threshold differ.
-ATTACK_SETTINGS = {
-    "oga": {
+# Released checkpoints are recognized by file content. The detector never receives
+# an attack label for the input image. Unknown checkpoints use the generic defaults.
+DEFAULT_MODEL_SETTINGS = {
+    "confidence": 0.25,
+    "background_opacity": 0.15,
+    "ssim_threshold": 0.08,
+    "threshold": 0.0,
+}
+
+RELEASED_MODEL_SETTINGS = {
+    "f3644516ad7228e4f66a9c32072f0d3586eb1d6628681e8756847968c990c38f": {
         "confidence": 0.50,
         "background_opacity": 0.20,
         "ssim_threshold": 0.25,
         "threshold": -0.0028012301884611235,
     },
-    "oda": {
+    "e0360b1c445a232295a70e7eee1a33a1acfa235be9ded040aefb4eb8694d8d63": {
         "confidence": 0.25,
         "background_opacity": 0.15,
         "ssim_threshold": 0.08,
         "threshold": 0.0023446551832737583,
     },
-    "rma": {
+    "7b1542eb4f2776dc0ebfd80da215213dd17013ffcbb2ef665cbe9306ef925a34": {
         "confidence": 0.25,
         "background_opacity": 0.15,
         "ssim_threshold": 0.08,
@@ -70,7 +78,7 @@ ATTACK_SETTINGS = {
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run TRACE on an image folder.")
-    parser.add_argument("--attack", required=True, choices=tuple(ATTACK_SETTINGS))
+    parser.add_argument("--model", required=True, type=Path, help="YOLOv5 checkpoint")
     parser.add_argument("--source", required=True, type=Path)
     parser.add_argument("--device", default="", help="CUDA device, for example 0; empty = automatic")
     return parser.parse_args()
@@ -85,8 +93,7 @@ def filename_label(path: Path) -> int | None:
     return None
 
 
-def make_trace_config(attack: str) -> TraceConfig:
-    settings = ATTACK_SETTINGS[attack]
+def make_trace_config(settings: dict[str, float]) -> TraceConfig:
     background_dir = ROOT / "assets" / "backgrounds"
     backgrounds = sorted(
         str(path)
@@ -119,8 +126,8 @@ def make_trace_config(attack: str) -> TraceConfig:
 def main() -> int:
     args = parse_args()
     source = args.source.expanduser().resolve()
-    weights = ROOT / "checkpoints" / f"{args.attack}.pt"
-    output = OUTPUT_ROOT / args.attack
+    weights = args.model.expanduser().resolve()
+    output = OUTPUT_ROOT / weights.stem
 
     for path, description in (
         (source, "image source"),
@@ -130,19 +137,21 @@ def main() -> int:
         if not path.exists():
             raise SystemExit(f"{description} not found: {path}")
 
-    config = make_trace_config(args.attack)
+    weights_hash = sha256_file(weights)
+    settings = RELEASED_MODEL_SETTINGS.get(weights_hash, DEFAULT_MODEL_SETTINGS)
+    config = make_trace_config(settings)
     model = YoloV5Detector(
         weights=weights,
         yolo_root=YOLOV5_ROOT,
         device=args.device,
         image_size=IMAGE_SIZE,
-        confidence=ATTACK_SETTINGS[args.attack]["confidence"],
+        confidence=settings["confidence"],
         nms_iou=NMS_IOU,
         half=HALF_PRECISION,
         trust_checkpoint=True,
     )
     detector = TraceDetector(model, config)
-    threshold = ATTACK_SETTINGS[args.attack]["threshold"]
+    threshold = settings["threshold"]
 
     rows = []
     paths = image_paths(source)
@@ -176,11 +185,9 @@ def main() -> int:
     write_json(
         output / "run.json",
         {
-            "attack": args.attack,
             "source": str(source),
             "weights": str(weights),
-            "weights_sha256": sha256_file(weights),
-            "detector_confidence": ATTACK_SETTINGS[args.attack]["confidence"],
+            "weights_sha256": weights_hash,
             "threshold": threshold,
             "trace": vars(config),
             "images": len(rows),
