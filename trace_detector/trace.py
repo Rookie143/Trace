@@ -74,6 +74,11 @@ def _matches_existing_detection(
     )
 
 
+def _stable_image_key(source: ImageInput) -> str:
+    """Keep TRACE sampling reproducible when a dataset is moved or cloned."""
+    return Path(source).name if isinstance(source, (str, Path)) else "<memory>"
+
+
 class TraceDetector:
     def __init__(self, detector: Detector, config: TraceConfig) -> None:
         self.detector = detector
@@ -283,7 +288,7 @@ class TraceDetector:
         image = load_rgb(source)
         original = self.detector.predict([image])[0]
         key = str(source) if isinstance(source, (str, Path)) else "<memory>"
-        random_key = f"{self.config.seed}:{key}"
+        random_key = f"{self.config.seed}:{_stable_image_key(source)}"
         ctc_rng = random.Random(f"{random_key}:ctc")
         ftc_rng = random.Random(f"{random_key}:ftc")
         ctc, ctc_queries = (

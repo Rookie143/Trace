@@ -14,11 +14,14 @@ poison.py  ->  train.py  ->  detect.py
 
 | Attack | F1 | Accuracy | AUROC |
 |---|---:|---:|---:|
-| OGA | 0.8944 | 0.8900 | 0.8985 |
-| ODA | 0.9205 | 0.9240 | 0.9111 |
-| RMA | 0.9257 | 0.9300 | 0.9167 |
+| OGA | 0.9135 | 0.9100 | 0.9223 |
+| ODA | 0.9381 | 0.9400 | 0.9273 |
+| RMA | 0.9474 | 0.9500 | 0.9357 |
 
-Each result uses 250 clean and 250 poisoned COCO val2017 images. Full scores, ROC data, checkpoint mAP, and ASR are in [RESULTS.md](RESULTS.md).
+Test setting: YOLOv5/COCO, 100 clean + 100 poisoned images (fixed seed-3
+subset), full CTC+FTC, best-F1 threshold; detector confidence is 0.50 for OGA
+and 0.25 for ODA/RMA.
+Full scores, checkpoint mAP, and ASR are in [RESULTS.md](RESULTS.md).
 
 ## Setup
 
@@ -56,7 +59,16 @@ The three released backdoored checkpoints are already included in
 
 ## 3. Detect
 
-Give TRACE one image or an image folder:
+The released test folders contain the same 100 clean and 100 poisoned images
+used in the result table. They are downloaded by `git lfs pull` during setup:
+
+```bash
+python detect.py --attack oga --source test_data/oga --device 0
+python detect.py --attack oda --source test_data/oda --device 0
+python detect.py --attack rma --source test_data/rma --device 0
+```
+
+To test other inputs, give TRACE one image or an image folder:
 
 ```bash
 python detect.py --attack oga --source /path/to/images --device 0

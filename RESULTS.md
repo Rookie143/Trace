@@ -8,13 +8,13 @@ evaluated set.
 
 | Attack | Samples | F1 | Accuracy | AUROC | Precision | Recall | Threshold |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| OGA | 500 | 0.8944 | 0.8900 | 0.8985 | 0.8598 | 0.9320 | -0.00254903 |
-| ODA | 500 | 0.9205 | 0.9240 | 0.9111 | 0.9649 | 0.8800 | 0.00254478 |
-| RMA | 500 | 0.9257 | 0.9300 | 0.9167 | 0.9864 | 0.8720 | 0.00217949 |
+| OGA | 200 | 0.9135 | 0.9100 | 0.9223 | 0.8796 | 0.9500 | -0.00280123 |
+| ODA | 200 | 0.9381 | 0.9400 | 0.9273 | 0.9681 | 0.9100 | 0.00234466 |
+| RMA | 200 | 0.9474 | 0.9500 | 0.9357 | 1.0000 | 0.9000 | 0.00132155 |
 
-Each quick verification run contains 250 clean and 250 poisoned samples. These
-files verify the release pipeline; the formal command in the README omits the
-sample cap and evaluates every eligible COCO val2017 image.
+Each run contains the same-size fixed seed-3 subset: 100 clean and 100 poisoned
+samples. Detector confidence is 0.50 for OGA and 0.25 for ODA/RMA; all reported
+TRACE score definitions are shared.
 
 Auditable outputs:
 

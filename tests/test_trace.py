@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image
 
 from trace_detector.config import TraceConfig
-from trace_detector.trace import TraceDetector, _matches_existing_detection
+from trace_detector.trace import TraceDetector, _matches_existing_detection, _stable_image_key
 from trace_detector.types import Detection
 
 
@@ -47,6 +47,12 @@ class EmergedContextDetector:
         if self.calls == 1:
             return [[] for _ in images]
         return [[Detection((10, 10, 40, 40), 0.8, 0)] for _ in images]
+
+
+def test_sampling_key_does_not_depend_on_dataset_location() -> None:
+    assert _stable_image_key("/first/dataset/clean_0001.jpg") == _stable_image_key(
+        "/another/location/clean_0001.jpg"
+    )
 
 
 def test_trace_score_is_finite(tmp_path: Path) -> None:

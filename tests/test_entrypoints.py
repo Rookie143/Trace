@@ -27,5 +27,11 @@ def test_attacks_share_the_complete_score_definition() -> None:
     assert definitions == {(True, True, "mean_abs_delta", "variance", 5, 1.0, 1.0)}
 
 
+def test_public_detector_confidence_matches_reported_runs() -> None:
+    assert ATTACK_SETTINGS["oga"]["confidence"] == 0.50
+    assert ATTACK_SETTINGS["oda"]["confidence"] == 0.25
+    assert ATTACK_SETTINGS["rma"]["confidence"] == 0.25
+
+
 def test_poisoning_defaults_are_explicit_for_every_attack() -> None:
     assert set(POISON_RATE) == set(TRIGGER_SIZE) == set(TRIGGER_OPACITY) == set(ATTACK_SETTINGS)

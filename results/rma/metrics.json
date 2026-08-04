@@ -1,13 +1,13 @@
 {
-  "accuracy": 0.93,
-  "auroc": 0.9166880000000001,
-  "clean_samples": 250.0,
-  "f1": 0.9256900212314226,
-  "poisoned_samples": 250.0,
-  "precision": 0.9864253393665159,
-  "recall": 0.872,
-  "roc_auc_trapezoid": 0.9166880000000001,
-  "samples": 500.0,
-  "threshold": 0.0021794910751647967,
+  "accuracy": 0.95,
+  "auroc": 0.9357,
+  "clean_samples": 100.0,
+  "f1": 0.9473684210526316,
+  "poisoned_samples": 100.0,
+  "precision": 1.0,
+  "recall": 0.9,
+  "roc_auc_trapezoid": 0.9357,
+  "samples": 200.0,
+  "threshold": 0.001321548501396208,
   "threshold_policy": "dataset-optimal"
 }

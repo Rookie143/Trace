@@ -28,7 +28,6 @@ YOLOV5_ROOT = ROOT / "third_party" / "yolov5"
 OUTPUT_ROOT = ROOT / "runs" / "trace"
 
 IMAGE_SIZE = 640
-CONFIDENCE = 0.25
 NMS_IOU = 0.45
 HALF_PRECISION = False
 
@@ -48,19 +47,22 @@ FTC_WEIGHT = 1.0
 # Only transformation settings and the reported maximum-F1 threshold differ.
 ATTACK_SETTINGS = {
     "oga": {
+        "confidence": 0.50,
         "background_opacity": 0.20,
         "ssim_threshold": 0.25,
-        "threshold": -0.0025490309527708144,
+        "threshold": -0.0028012301884611235,
     },
     "oda": {
+        "confidence": 0.25,
         "background_opacity": 0.15,
         "ssim_threshold": 0.08,
-        "threshold": 0.002544781945875707,
+        "threshold": 0.0023446551832737583,
     },
     "rma": {
+        "confidence": 0.25,
         "background_opacity": 0.15,
         "ssim_threshold": 0.08,
-        "threshold": 0.0021794910751647967,
+        "threshold": 0.001321548501396208,
     },
 }
 # ---------------------------------------------------------------------------
@@ -134,7 +136,7 @@ def main() -> int:
         yolo_root=YOLOV5_ROOT,
         device=args.device,
         image_size=IMAGE_SIZE,
-        confidence=CONFIDENCE,
+        confidence=ATTACK_SETTINGS[args.attack]["confidence"],
         nms_iou=NMS_IOU,
         half=HALF_PRECISION,
         trust_checkpoint=True,
@@ -178,6 +180,7 @@ def main() -> int:
             "source": str(source),
             "weights": str(weights),
             "weights_sha256": sha256_file(weights),
+            "detector_confidence": ATTACK_SETTINGS[args.attack]["confidence"],
             "threshold": threshold,
             "trace": vars(config),
             "images": len(rows),
